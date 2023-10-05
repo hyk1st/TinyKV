@@ -98,7 +98,6 @@ func (it *BadgerIterator) Rewind() {
 type DBIterator interface {
 	// Item returns pointer to the current key-value pair.
 	Item() DBItem
-	// Valid returns false when iteration is done.
 	Valid() bool
 	// Next would advance the iterator by one. Always check it.Valid() after a Next()
 	// to ensure you have access to a valid it.Item().
