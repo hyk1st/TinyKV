@@ -22,6 +22,7 @@ func (ke *KeyError) Error() string {
 
 // MvccTxn groups together writes as part of a single transaction. It also provides an abstraction over low-level
 // storage, lowering the concepts of timestamps, writes, and locks into plain keys and values.
+// MvccTxn 将写入作为单个事务的一部分进行分组。它还为底层 存储的抽象，将时间戳、写入和锁的概念简化为简单的键和值。
 type MvccTxn struct {
 	StartTS uint64
 	Reader  storage.StorageReader
@@ -159,7 +160,7 @@ func (txn *MvccTxn) CurrentWrite(key []byte) (*Write, uint64, error) {
 	// Your Code Here (4A).
 	iter := txn.Reader.IterCF(engine_util.CfWrite)
 	defer iter.Close()
-	enKey := EncodeKey(key, 300000000000000000)
+	enKey := EncodeKey(key, TsMax)
 	iter.Seek(enKey)
 	for iter.Valid() {
 		if !reflect.DeepEqual(DecodeUserKey(iter.Item().Key()), key) {
@@ -192,7 +193,7 @@ func (txn *MvccTxn) MostRecentWrite(key []byte) (*Write, uint64, error) {
 	// Your Code Here (4A).
 	iter := txn.Reader.IterCF(engine_util.CfWrite)
 	defer iter.Close()
-	enKey := EncodeKey(key, 300000000000000000)
+	enKey := EncodeKey(key, TsMax)
 	iter.Seek(enKey)
 	for iter.Valid() {
 		if !reflect.DeepEqual(DecodeUserKey(iter.Item().Key()), key) {
