@@ -181,6 +181,9 @@ func TestCheckTxnStatusRolledBack4C(t *testing.T) {
 		{cf: engine_util.CfWrite, key: []byte{3}, ts: cmd.LockTs, value: []byte{3, 0, 0, 5, 0, 0, 0, 0, builder.ts()}},
 		{cf: engine_util.CfLock, key: []byte{3}, value: []byte{3, 1, 0, 0, 8, 0, 0, 0, 0, builder.ts(), 0, 0, 0, 0, 0, 0, 0, 8}},
 	})
+	//lock, _ := mvcc.ParseLock([]byte{3, 1, 0, 0, 8, 0, 0, 0, 0, builder.ts(), 0, 0, 0, 0, 0, 0, 0, 8})
+	//fmt.Println(builder.ts(), "  ", cmd.LockTs)
+	//fmt.Printf("%+v", lock)
 	resp := builder.runOneRequest(cmd).(*kvrpcpb.CheckTxnStatusResponse)
 
 	assert.Nil(t, resp.RegionError)
